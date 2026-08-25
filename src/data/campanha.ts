@@ -135,7 +135,10 @@ export const QORD = [
   "FORA DO RADAR",
 ];
 
-export const RAMPA = ["var(--r1)", "var(--r2)", "var(--r3)", "var(--r4)", "var(--r5)"];
+export const RAMPA = ["#FBE9E6", "#F3C4BA", "#E0887A", "#D10A0A", "#6E1014"];
+
+/** Cor de área sem registro no tema coroplético. */
+export const SEM_REGISTRO = "#F2EDEC";
 
 /** Agrupamento dos segmentos em eixos temáticos (junta a cauda longa). */
 export const MAPA_SEG: Record<string, string> = {
