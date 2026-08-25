@@ -1,0 +1,1 @@
+ALTER TABLE public.fotos_lideranca ADD CONSTRAINT fotos_lideranca_user_chave_key UNIQUE (user_id, chave);
