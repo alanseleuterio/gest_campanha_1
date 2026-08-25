@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConexoesRouteImport } from './routes/conexoes'
 import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as RedeRouteImport } from './routes/rede'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConexoesRoute = ConexoesRouteImport.update({
+  id: '/conexoes',
+  path: '/conexoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapaRoute = MapaRouteImport.update({
@@ -31,30 +37,34 @@ const RedeRoute = RedeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/conexoes': typeof ConexoesRoute
   '/mapa': typeof MapaRoute
   '/rede': typeof RedeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/conexoes': typeof ConexoesRoute
   '/mapa': typeof MapaRoute
   '/rede': typeof RedeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/conexoes': typeof ConexoesRoute
   '/mapa': typeof MapaRoute
   '/rede': typeof RedeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mapa' | '/rede'
+  fullPaths: '/' | '/conexoes' | '/mapa' | '/rede'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mapa' | '/rede'
-  id: '__root__' | '/' | '/mapa' | '/rede'
+  to: '/' | '/conexoes' | '/mapa' | '/rede'
+  id: '__root__' | '/' | '/conexoes' | '/mapa' | '/rede'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConexoesRoute: typeof ConexoesRoute
   MapaRoute: typeof MapaRoute
   RedeRoute: typeof RedeRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conexoes': {
+      id: '/conexoes'
+      path: '/conexoes'
+      fullPath: '/conexoes'
+      preLoaderRoute: typeof ConexoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mapa': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConexoesRoute: ConexoesRoute,
   MapaRoute: MapaRoute,
   RedeRoute: RedeRoute,
 }
