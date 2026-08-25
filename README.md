@@ -2,7 +2,7 @@
 
 Plataforma de inteligência territorial para campanha política (PT/MS 2026), construída em **React + Vite + TypeScript + Tailwind CSS**.
 
-Todos os dados alterados pelo usuário (fichas de entrevista, fotos das lideranças e acesso da equipe) ficam armazenados **no próprio navegador, via LocalStorage** — não há servidor nem banco externo obrigatório.
+Os dados (fichas de entrevista e fotos das lideranças) são persistidos em um banco **PostgreSQL** gerenciado, com autenticação de e-mail/senha por usuário e isolamento por linha (RLS): cada membro da equipe enxerga apenas os próprios registros.
 
 ## Como Rodar o Projeto
 
@@ -18,7 +18,14 @@ Inicie o servidor de desenvolvimento:
 npm run dev
 ```
 
-Acesse <http://localhost:5173> no navegador. Todos os dados alterados ficarão armazenados no seu navegador via LocalStorage.
+Acesse <http://localhost:5173> no navegador.
+
+Crie um arquivo `.env` na raiz com as credenciais do backend:
+
+```bash
+VITE_SUPABASE_URL="https://SEU-PROJETO.supabase.co"
+VITE_SUPABASE_PUBLISHABLE_KEY="sua-chave-publica"
+```
 
 ## Scripts
 
@@ -45,26 +52,24 @@ Acesse <http://localhost:5173> no navegador. Todos os dados alterados ficarão a
 src/
   components/    Componentes de UI (AppShell, Mapa, Grafo, Login, cards)
   data/          Dataset da campanha (municípios, bairros, rede) e utilitários
-  hooks/         Hooks de dados (React Query sobre LocalStorage)
-  lib/           Autenticação local, persistência (localdb) e captura de foto
+  hooks/         Hooks de dados (React Query sobre PostgreSQL)
+  lib/           Autenticação, acesso ao banco e captura de foto
   routes/        Rotas da aplicação
   styles.css     Design system (Tailwind v4, tokens OKLCH, paleta PT)
 ```
 
-## Persistência (LocalStorage)
+## Persistência (PostgreSQL)
 
-As chaves gravadas no navegador são prefixadas com `tb:`:
+Tabelas no schema `public`:
 
-- `tb:fichas` — fichas de entrevista
-- `tb:fotos` — fotos das lideranças (data URI)
-- `tb:contas` — contas de acesso criadas neste navegador
-- `tb:sessao` — sessão ativa
+- `fichas` — fichas de entrevista (nome, bairro, liderança, situação de voto, pautas, próximo passo, telefone, observação, foto)
+- `fotos_lideranca` — foto por liderança (`user_id` + `chave` únicos)
 
-Para zerar a base local, limpe o LocalStorage do site nas ferramentas do navegador.
+Ambas têm RLS habilitado com políticas por `auth.uid()`, então cada usuário lê e escreve apenas as próprias linhas.
 
 ## Acesso
 
-Na primeira execução, informe um e-mail e senha na tela de login: a conta é criada automaticamente neste navegador. Contas adicionais podem ser criadas em "Criar conta".
+Use "Criar conta" para registrar um e-mail e senha (confirme o e-mail, se solicitado) e depois entre normalmente.
 
 ## Stack
 
