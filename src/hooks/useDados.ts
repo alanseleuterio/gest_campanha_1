@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { chave } from "@/data/campanha";
+import { CHAVES, gravar, ler, novoId } from "@/lib/localdb";
 
 export interface Ficha {
   id: string;
@@ -20,17 +20,14 @@ export interface Ficha {
 
 export type NovaFicha = Omit<Ficha, "id" | "created_at">;
 
+const lerFichas = () => ler<Ficha[]>(CHAVES.fichas, []);
+const lerFotos = () => ler<Record<string, string>>(CHAVES.fotos, {});
+
 export function useFichas() {
   return useQuery({
     queryKey: ["fichas"],
-    queryFn: async (): Promise<Ficha[]> => {
-      const { data, error } = await supabase
-        .from("fichas")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return (data ?? []) as Ficha[];
-    },
+    queryFn: async (): Promise<Ficha[]> =>
+      [...lerFichas()].sort((a, b) => b.created_at.localeCompare(a.created_at)),
   });
 }
 
@@ -38,10 +35,8 @@ export function useSalvaFicha() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (f: NovaFicha) => {
-      const { data: u } = await supabase.auth.getUser();
-      if (!u.user) throw new Error("Sessão expirada");
-      const { error } = await supabase.from("fichas").insert({ ...f, user_id: u.user.id });
-      if (error) throw error;
+      const nova: Ficha = { ...f, id: novoId(), created_at: new Date().toISOString() };
+      gravar(CHAVES.fichas, [nova, ...lerFichas()]);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["fichas"] }),
   });
@@ -51,8 +46,10 @@ export function useApagaFicha() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("fichas").delete().eq("id", id);
-      if (error) throw error;
+      gravar(
+        CHAVES.fichas,
+        lerFichas().filter((f) => f.id !== id),
+      );
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["fichas"] }),
   });
@@ -62,15 +59,7 @@ export function useApagaFicha() {
 export function useFotos() {
   return useQuery({
     queryKey: ["fotos"],
-    queryFn: async (): Promise<Record<string, string>> => {
-      const { data, error } = await supabase.from("fotos_lideranca").select("chave, foto");
-      if (error) throw error;
-      const m: Record<string, string> = {};
-      (data ?? []).forEach((r) => {
-        m[r.chave] = r.foto;
-      });
-      return m;
-    },
+    queryFn: async (): Promise<Record<string, string>> => lerFotos(),
   });
 }
 
@@ -78,15 +67,7 @@ export function useSalvaFoto() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ nome, foto }: { nome: string; foto: string }) => {
-      const { data: u } = await supabase.auth.getUser();
-      if (!u.user) throw new Error("Sessão expirada");
-      const { error } = await supabase
-        .from("fotos_lideranca")
-        .upsert(
-          { user_id: u.user.id, chave: chave(nome), nome, foto },
-          { onConflict: "user_id,chave" },
-        );
-      if (error) throw error;
+      gravar(CHAVES.fotos, { ...lerFotos(), [chave(nome)]: foto });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["fotos"] }),
   });
