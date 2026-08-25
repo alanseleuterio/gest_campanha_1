@@ -1,22 +1,21 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { CHAVES, gravar, hash, ler, remover } from "@/lib/localdb";
+import { supabase } from "@/integrations/supabase/client";
 
-export type Usuario = { email: string };
-type Conta = { email: string; senha: string };
+export type Usuario = { id: string; email: string };
 
 type Ctx = {
   session: Usuario | null;
   carregando: boolean;
-  entrar: (email: string, senha: string) => void;
-  criarConta: (email: string, senha: string) => void;
+  entrar: (email: string, senha: string) => Promise<void>;
+  criarConta: (email: string, senha: string) => Promise<void>;
   sair: () => Promise<void>;
 };
 
 const AuthCtx = createContext<Ctx>({
   session: null,
   carregando: true,
-  entrar: () => {},
-  criarConta: () => {},
+  entrar: async () => {},
+  criarConta: async () => {},
   sair: async () => {},
 });
 
@@ -25,37 +24,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    setSession(ler<Usuario | null>(CHAVES.sessao, null));
-    setCarregando(false);
+    const { data: sub } = supabase.auth.onAuthStateChange((_evento, s) => {
+      setSession(s?.user ? { id: s.user.id, email: s.user.email ?? "" } : null);
+      setCarregando(false);
+    });
+
+    void supabase.auth.getSession().then(({ data }) => {
+      const u = data.session?.user;
+      setSession(u ? { id: u.id, email: u.email ?? "" } : null);
+      setCarregando(false);
+    });
+
+    return () => sub.subscription.unsubscribe();
   }, []);
 
-  function contas() {
-    return ler<Conta[]>(CHAVES.contas, []);
+  async function criarConta(email: string, senha: string) {
+    const { error } = await supabase.auth.signUp({
+      email: email.trim().toLowerCase(),
+      password: senha,
+      options: { emailRedirectTo: `${window.location.origin}/` },
+    });
+    if (error) throw new Error(error.message);
   }
 
-  function abrirSessao(email: string) {
-    const u: Usuario = { email };
-    gravar(CHAVES.sessao, u);
-    setSession(u);
-  }
-
-  function criarConta(email: string, senha: string) {
-    const lista = contas();
-    const e = email.trim().toLowerCase();
-    if (lista.some((c) => c.email === e)) throw new Error("Já existe uma conta com este e-mail.");
-    if (senha.length < 6) throw new Error("A senha precisa ter ao menos 6 caracteres.");
-    gravar(CHAVES.contas, [...lista, { email: e, senha: hash(senha) }]);
-    abrirSessao(e);
-  }
-
-  function entrar(email: string, senha: string) {
-    const e = email.trim().toLowerCase();
-    const lista = contas();
-    const c = lista.find((x) => x.email === e);
-    // Primeiro acesso do navegador: a conta informada é criada automaticamente.
-    if (!c && lista.length === 0) return criarConta(e, senha);
-    if (!c || c.senha !== hash(senha)) throw new Error("E-mail ou senha inválidos.");
-    abrirSessao(e);
+  async function entrar(email: string, senha: string) {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password: senha,
+    });
+    if (error) throw new Error(error.message);
   }
 
   return (
@@ -66,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         entrar,
         criarConta,
         sair: async () => {
-          remover(CHAVES.sessao);
+          await supabase.auth.signOut();
           setSession(null);
         },
       }}
