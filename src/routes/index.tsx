@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import foto from "@/assets/tiago-botelho.jpg";
+
 import { BRL, D, QCOR, QORD, QROT, TOT_CG, TOT_MS, cap } from "@/data/campanha";
 
 export const Route = createFileRoute("/")({
