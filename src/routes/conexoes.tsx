@@ -20,7 +20,7 @@ export const Route = createFileRoute("/conexoes")({
       },
     ],
   }),
-  component: Conexoes;
+  component: Conexoes,
 });
 
 function Conexoes() {
