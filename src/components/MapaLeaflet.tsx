@@ -7,6 +7,7 @@ import {
   QORD,
   QROT,
   RAMPA,
+  SEM_REGISTRO,
   cap,
   chave,
   type Bairro,
