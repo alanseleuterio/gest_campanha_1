@@ -67,7 +67,7 @@ function Painel() {
   return (
     <AppShell>
       <section className="card-tb hero">
-        <img src="/favicon.ico" alt="" hidden />
+        <img src={foto} alt="Tiago Botelho, pré-candidato a deputado estadual pelo MS" />
         <div>
           <h1>Onde está o nosso voto e onde ainda falta gente</h1>
           <p className="sub-tb mt-2 mb-0">
