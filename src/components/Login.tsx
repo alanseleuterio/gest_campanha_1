@@ -9,16 +9,21 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  function enviar(e: React.FormEvent) {
+  const [enviando, setEnviando] = useState(false);
+
+  async function enviar(e: React.FormEvent) {
     e.preventDefault();
+    setEnviando(true);
     try {
-      if (modo === "entrar") entrar(email, senha);
+      if (modo === "entrar") await entrar(email, senha);
       else {
-        criarConta(email, senha);
-        toast.success("Conta criada neste navegador.");
+        await criarConta(email, senha);
+        toast.success("Conta criada. Confirme o e-mail, se solicitado, e entre.");
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Não foi possível entrar.");
+    } finally {
+      setEnviando(false);
     }
   }
 
@@ -36,7 +41,7 @@ export function Login() {
           <p className="sub-tb mt-1 mb-0">Inteligência territorial · PT/MS 2026</p>
         </div>
 
-        <form className="card-tb" onSubmit={enviar}>
+        <form className="card-tb" onSubmit={(e) => void enviar(e)}>
           <div className="rot">{modo === "entrar" ? "Acesso da equipe" : "Nova conta da equipe"}</div>
           <div className="campo-tb">
             <label className="tit" htmlFor="email">
@@ -65,8 +70,8 @@ export function Login() {
               onChange={(e) => setSenha(e.target.value)}
             />
           </div>
-          <button className="bt p w-full" type="submit">
-            {modo === "entrar" ? "Entrar" : "Criar conta"}
+          <button className="bt p w-full" type="submit" disabled={enviando}>
+            {enviando ? "Aguarde..." : modo === "entrar" ? "Entrar" : "Criar conta"}
           </button>
           <p className="aj text-center">
             {modo === "entrar" ? "Ainda não tem acesso?" : "Já tem conta?"}{" "}
@@ -79,7 +84,7 @@ export function Login() {
             </button>
           </p>
           <p className="aj text-center">
-            Acesso e dados ficam salvos apenas neste navegador (LocalStorage).
+            Acesso e dados ficam salvos com segurança no banco de dados da campanha.
           </p>
         </form>
       </div>
