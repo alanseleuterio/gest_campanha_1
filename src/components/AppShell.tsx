@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </header>
 
 
-      <main className="mx-auto max-w-[1080px] px-4 py-5">{children}</main>
+      <main className="mx-auto max-w-[1180px] px-4 py-5 md:px-[18px]">{children}</main>
 
       <nav className="fixed bottom-0 left-0 right-0 z-20 grid grid-cols-6 border-t border-linha bg-card md:hidden">
         {ABAS.map((a) => {
