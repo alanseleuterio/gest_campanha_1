@@ -130,11 +130,11 @@ export default function MapaLeaflet() {
     const arr: (Municipio | Bairro)[] = modo === "MS" ? D.mun : D.bai;
 
     const corTema = (f: Municipio | Bairro) => {
-      if (tema === "q") return QCOR[f.q] ?? "var(--q-fora)";
+      if (tema === "q") return QCOR[f.q] ?? "#ECE8E7";
       const val = tema === "v" ? f.v : tema === "vm" ? f.vm : f.l;
       const mx =
         Math.max(...arr.map((a) => (tema === "v" ? a.v : tema === "vm" ? a.vm : a.l))) || 1;
-      if (!val) return "var(--linha2)";
+      if (!val) return SEM_REGISTRO;
       return RAMPA[Math.min(4, Math.floor(Math.pow(val / mx, 0.45) * 5))]!;
     };
 
