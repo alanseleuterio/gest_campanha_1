@@ -1,43 +1,25 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+import { useAuth } from "@/lib/auth";
 import foto from "@/assets/tiago-botelho.jpg";
 
 export function Login() {
+  const { entrar, criarConta } = useAuth();
   const [modo, setModo] = useState<"entrar" | "criar">("entrar");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [ocupado, setOcupado] = useState(false);
 
-  async function enviar(e: React.FormEvent) {
+  function enviar(e: React.FormEvent) {
     e.preventDefault();
-    setOcupado(true);
     try {
-      if (modo === "entrar") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password: senha,
-          options: { emailRedirectTo: window.location.origin },
-        });
-        if (error) throw error;
-        toast.success("Conta criada. Confirme o e-mail se for solicitado.");
+      if (modo === "entrar") entrar(email, senha);
+      else {
+        criarConta(email, senha);
+        toast.success("Conta criada neste navegador.");
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Não foi possível entrar.");
-    } finally {
-      setOcupado(false);
     }
-  }
-
-  async function google() {
-    const r = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (r.error) toast.error("Não foi possível entrar com o Google.");
   }
 
   return (
@@ -83,16 +65,8 @@ export function Login() {
               onChange={(e) => setSenha(e.target.value)}
             />
           </div>
-          <button className="bt p w-full" disabled={ocupado} type="submit">
+          <button className="bt p w-full" type="submit">
             {modo === "entrar" ? "Entrar" : "Criar conta"}
-          </button>
-          <button
-            className="bt s mt-2 w-full"
-            type="button"
-            onClick={google}
-            disabled={ocupado}
-          >
-            Entrar com o Google
           </button>
           <p className="aj text-center">
             {modo === "entrar" ? "Ainda não tem acesso?" : "Já tem conta?"}{" "}
@@ -103,6 +77,9 @@ export function Login() {
             >
               {modo === "entrar" ? "Criar conta" : "Entrar"}
             </button>
+          </p>
+          <p className="aj text-center">
+            Acesso e dados ficam salvos apenas neste navegador (LocalStorage).
           </p>
         </form>
       </div>
