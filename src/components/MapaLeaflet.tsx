@@ -337,6 +337,10 @@ export default function MapaLeaflet() {
               </span>
             ))}
             <span className="font-semibold">mais</span>
+            <span className="lg">
+              <i style={{ background: SEM_REGISTRO }} />
+              sem registro
+            </span>
           </>
         )}
         {modo === "MS" ? (
