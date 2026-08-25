@@ -36,40 +36,60 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen pb-[76px] md:pb-0">
-      <header className="sticky top-0 z-20 border-b border-linha bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1080px] items-center gap-3 px-4 py-3">
+      <header className="sticky top-0 z-30 bg-pt text-primary-foreground shadow-[0_2px_14px_oklch(0.3735_0.1397_25.64/22%)]">
+        <div className="mx-auto flex max-w-[1180px] items-center gap-3.5 px-4 py-2.5 md:px-[18px]">
+          <svg viewBox="0 0 100 100" aria-hidden="true" className="h-[34px] w-[34px] flex-none">
+            <circle cx="50" cy="50" r="48" fill="currentColor" />
+            <circle cx="50" cy="50" r="42" fill="var(--pt)" />
+            <path
+              fill="currentColor"
+              d="M50 18 L59.5 41.5 L84 43.5 L65.5 59.5 L71.5 84 L50 70.5 L28.5 84 L34.5 59.5 L16 43.5 L40.5 41.5 Z"
+            />
+          </svg>
+          <div className="min-w-0 flex-1">
+            <b className="block font-serif text-[18px] leading-[1.15]">Tiago Botelho</b>
+            <span className="block truncate text-[10.5px] uppercase tracking-[0.1em] text-primary-foreground/75">
+              Deputado Estadual · MS 2026
+            </span>
+          </div>
+          <span className="hidden whitespace-nowrap rounded-full border border-primary-foreground/30 bg-primary-foreground/15 px-[11px] py-1.5 text-[10px] font-bold tracking-[0.09em] sm:inline">
+            USO INTERNO
+          </span>
           <img
             src={foto}
             alt="Tiago Botelho"
-            className="h-10 w-10 flex-none rounded-xl object-cover"
-            style={{ objectPosition: "50% 8%" }}
+            className="h-[46px] w-[46px] flex-none rounded-full border-[2.5px] border-primary-foreground/90 object-cover"
+            style={{ objectPosition: "50% 12%" }}
           />
-          <div className="min-w-0 flex-1">
-            <div className="truncate font-serif text-[16px] font-bold">Tiago Botelho</div>
-            <div className="truncate text-[11.5px] text-tinta2">
-              Inteligência territorial · PT/MS 2026
-            </div>
-          </div>
-          <button className="bt s px-3 py-2 text-[12px]" onClick={() => void sair()}>
+          <button
+            className="rounded-lg border border-primary-foreground/30 bg-primary-foreground/10 px-3 py-1.5 text-[12px] font-semibold"
+            onClick={() => void sair()}
+          >
             Sair
           </button>
         </div>
-        <nav className="mx-auto hidden max-w-[1080px] gap-1 overflow-x-auto px-3 pb-2 md:flex">
-          {ABAS.map((a) => (
-            <Link
-              key={a.to}
-              to={a.to}
-              className="rounded-lg px-3 py-2 text-[13px] font-semibold text-tinta2 aria-[current=page]:bg-pt aria-[current=page]:text-white"
-              activeOptions={{ exact: a.to === "/" }}
-              aria-current={
-                (a.to === "/" ? path === "/" : path.startsWith(a.to)) ? "page" : undefined
-              }
-            >
-              {a.rot}
-            </Link>
-          ))}
+        <nav className="hidden bg-pt-escuro md:block">
+          <div className="mx-auto flex max-w-[1180px] gap-0.5 overflow-x-auto px-3">
+            {ABAS.map((a) => {
+              const ativo = a.to === "/" ? path === "/" : path.startsWith(a.to);
+              return (
+                <Link
+                  key={a.to}
+                  to={a.to}
+                  className={`whitespace-nowrap border-b-[3px] px-[15px] py-3 text-[13.5px] font-semibold transition-colors ${
+                    ativo
+                      ? "border-estrela text-primary-foreground"
+                      : "border-transparent text-primary-foreground/70 hover:text-primary-foreground"
+                  }`}
+                >
+                  {a.rot}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
       </header>
+
 
       <main className="mx-auto max-w-[1080px] px-4 py-5">{children}</main>
 
