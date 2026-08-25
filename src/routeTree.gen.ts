@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BuscarRouteImport } from './routes/buscar'
 import { Route as ConexoesRouteImport } from './routes/conexoes'
 import { Route as EntrevistasRouteImport } from './routes/entrevistas'
 import { Route as MapaRouteImport } from './routes/mapa'
@@ -18,6 +19,11 @@ import { Route as RedeRouteImport } from './routes/rede'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuscarRoute = BuscarRouteImport.update({
+  id: '/buscar',
+  path: '/buscar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConexoesRoute = ConexoesRouteImport.update({
@@ -43,6 +49,7 @@ const RedeRoute = RedeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/buscar': typeof BuscarRoute
   '/conexoes': typeof ConexoesRoute
   '/entrevistas': typeof EntrevistasRoute
   '/mapa': typeof MapaRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/buscar': typeof BuscarRoute
   '/conexoes': typeof ConexoesRoute
   '/entrevistas': typeof EntrevistasRoute
   '/mapa': typeof MapaRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/buscar': typeof BuscarRoute
   '/conexoes': typeof ConexoesRoute
   '/entrevistas': typeof EntrevistasRoute
   '/mapa': typeof MapaRoute
@@ -65,14 +74,22 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/conexoes' | '/entrevistas' | '/mapa' | '/rede'
+  fullPaths: '/' | '/buscar' | '/conexoes' | '/entrevistas' | '/mapa' | '/rede'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/conexoes' | '/entrevistas' | '/mapa' | '/rede'
-  id: '__root__' | '/' | '/conexoes' | '/entrevistas' | '/mapa' | '/rede'
+  to: '/' | '/buscar' | '/conexoes' | '/entrevistas' | '/mapa' | '/rede'
+  id:
+    | '__root__'
+    | '/'
+    | '/buscar'
+    | '/conexoes'
+    | '/entrevistas'
+    | '/mapa'
+    | '/rede'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BuscarRoute: typeof BuscarRoute
   ConexoesRoute: typeof ConexoesRoute
   EntrevistasRoute: typeof EntrevistasRoute
   MapaRoute: typeof MapaRoute
@@ -86,6 +103,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buscar': {
+      id: '/buscar'
+      path: '/buscar'
+      fullPath: '/buscar'
+      preLoaderRoute: typeof BuscarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conexoes': {
@@ -121,6 +145,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BuscarRoute: BuscarRoute,
   ConexoesRoute: ConexoesRoute,
   EntrevistasRoute: EntrevistasRoute,
   MapaRoute: MapaRoute,

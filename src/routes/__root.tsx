@@ -77,14 +77,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Plataforma Tiago Botelho · inteligência territorial" },
+      {
+        name: "description",
+        content:
+          "Plataforma de campanha de Tiago Botelho: votos de 2022, mapa do MS e de Campo Grande, rede de lideranças e entrevistas de campo.",
+      },
+      { name: "author", content: "Campanha Tiago Botelho" },
+      { property: "og:title", content: "Plataforma Tiago Botelho" },
+      {
+        property: "og:description",
+        content: "Mapa eleitoral, rede de lideranças e entrevistas de campo em um só lugar.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
