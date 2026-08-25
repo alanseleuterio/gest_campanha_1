@@ -109,12 +109,12 @@ export const TOT_MS = 178041;
 export const TOT_CG = 54721;
 
 export const QCOR: Record<string, string> = {
-  "BASE ORFA": "var(--q-orfa)",
-  "BASE A ATIVAR": "var(--q-ativar)",
-  "BASE A REFORCAR": "var(--q-ativar)",
-  "BASE CONSOLIDADA": "var(--q-consol)",
-  "ESTRUTURA SEM RETORNO": "var(--q-semret)",
-  "FORA DO RADAR": "var(--q-fora)",
+  "BASE ORFA": "#B08585",
+  "BASE A ATIVAR": "#C0503C",
+  "BASE A REFORCAR": "#C0503C",
+  "BASE CONSOLIDADA": "#7A0F14",
+  "ESTRUTURA SEM RETORNO": "#DF8A79",
+  "FORA DO RADAR": "#ECE8E7",
 };
 
 export const QROT: Record<string, string> = {
