@@ -109,12 +109,12 @@ export const TOT_MS = 178041;
 export const TOT_CG = 54721;
 
 export const QCOR: Record<string, string> = {
-  "BASE ORFA": "var(--q-orfa)",
-  "BASE A ATIVAR": "var(--q-ativar)",
-  "BASE A REFORCAR": "var(--q-ativar)",
-  "BASE CONSOLIDADA": "var(--q-consol)",
-  "ESTRUTURA SEM RETORNO": "var(--q-semret)",
-  "FORA DO RADAR": "var(--q-fora)",
+  "BASE ORFA": "#B08585",
+  "BASE A ATIVAR": "#C0503C",
+  "BASE A REFORCAR": "#C0503C",
+  "BASE CONSOLIDADA": "#7A0F14",
+  "ESTRUTURA SEM RETORNO": "#DF8A79",
+  "FORA DO RADAR": "#ECE8E7",
 };
 
 export const QROT: Record<string, string> = {
@@ -135,7 +135,10 @@ export const QORD = [
   "FORA DO RADAR",
 ];
 
-export const RAMPA = ["var(--r1)", "var(--r2)", "var(--r3)", "var(--r4)", "var(--r5)"];
+export const RAMPA = ["#FBE9E6", "#F3C4BA", "#E0887A", "#D10A0A", "#6E1014"];
+
+/** Cor de área sem registro no tema coroplético. */
+export const SEM_REGISTRO = "#F2EDEC";
 
 /** Agrupamento dos segmentos em eixos temáticos (junta a cauda longa). */
 export const MAPA_SEG: Record<string, string> = {
