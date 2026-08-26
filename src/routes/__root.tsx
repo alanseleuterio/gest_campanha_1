@@ -103,10 +103,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
   }),
   shellComponent: RootShell,
+  loader: async ({ context }) => {
+    const d = await context.queryClient.ensureQueryData(datasetQuery);
+    aplicaDataset(d);
+  },
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
+
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
