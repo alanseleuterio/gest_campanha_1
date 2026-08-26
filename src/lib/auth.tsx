@@ -3,11 +3,16 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type Usuario = { id: string; email: string };
 
+/** Credenciais de desenvolvimento (exibidas na tela de login). */
+export const DEV_EMAIL = "equipe@tiagobotelho.dev";
+export const DEV_SENHA = "campanha2026";
+
 type Ctx = {
   session: Usuario | null;
   carregando: boolean;
   entrar: (email: string, senha: string) => Promise<void>;
   criarConta: (email: string, senha: string) => Promise<void>;
+  entrarDev: () => Promise<void>;
   sair: () => Promise<void>;
 };
 
@@ -16,6 +21,7 @@ const AuthCtx = createContext<Ctx>({
   carregando: true,
   entrar: async () => {},
   criarConta: async () => {},
+  entrarDev: async () => {},
   sair: async () => {},
 });
 
