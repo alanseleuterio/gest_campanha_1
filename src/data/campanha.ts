@@ -1,4 +1,3 @@
-import raw from "./dataset.json";
 
 export type Anel = [number, number][];
 
