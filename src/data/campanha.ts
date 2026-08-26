@@ -181,16 +181,35 @@ export const COR_REGIAO: Record<string, string> = {
   "Sem região": "var(--c0)",
 };
 
-const base = raw as unknown as Dataset;
-
-/** Dados da campanha, com o eixo temático já calculado em cada liderança da rede. */
+/**
+ * Dados da campanha vindos do PostgreSQL. O objeto tem identidade estável e é
+ * preenchido por `aplicaDataset` no carregamento da aplicação (rota raiz).
+ */
 export const D: Dataset = {
-  ...base,
+  mun: [],
+  bai: [],
+  reg: [],
+  lid: [],
+  loc: [],
   rede: {
-    ...base.rede,
-    lid: base.rede.lid.map((l) => ({ ...l, eixo: MAPA_SEG[l.s] ?? "Outros eixos" })),
+    cand: { n: "", sub: "", votos: 0 },
+    geral: { n: "", sub: "" },
+    regioes: [],
+    coord: [],
+    lid: [],
   },
 };
+
+/** Substitui o conteúdo de `D` pelos dados carregados do banco. */
+export function aplicaDataset(d: Dataset) {
+  D.mun = d.mun;
+  D.bai = d.bai;
+  D.reg = d.reg;
+  D.lid = d.lid;
+  D.loc = d.loc;
+  D.rede = d.rede;
+}
+
 
 export const VOTO = [
   "Vota com a gente",
