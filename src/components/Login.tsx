@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { useAuth } from "@/lib/auth";
+import { useAuth, DEV_EMAIL, DEV_SENHA } from "@/lib/auth";
 import foto from "@/assets/tiago-botelho.jpg";
 
 export function Login() {
-  const { entrar, criarConta } = useAuth();
+  const { entrar, criarConta, entrarDev } = useAuth();
   const [modo, setModo] = useState<"entrar" | "criar">("entrar");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [email, setEmail] = useState(DEV_EMAIL);
+  const [senha, setSenha] = useState(DEV_SENHA);
 
   const [enviando, setEnviando] = useState(false);
 
@@ -20,6 +20,17 @@ export function Login() {
         await criarConta(email, senha);
         toast.success("Conta criada. Confirme o e-mail, se solicitado, e entre.");
       }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Não foi possível entrar.");
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  async function acessoRapido() {
+    setEnviando(true);
+    try {
+      await entrarDev();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Não foi possível entrar.");
     } finally {
