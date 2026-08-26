@@ -3,11 +3,16 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type Usuario = { id: string; email: string };
 
+/** Credenciais de desenvolvimento (exibidas na tela de login). */
+export const DEV_EMAIL = "equipe@tiagobotelho.dev";
+export const DEV_SENHA = "campanha2026";
+
 type Ctx = {
   session: Usuario | null;
   carregando: boolean;
   entrar: (email: string, senha: string) => Promise<void>;
   criarConta: (email: string, senha: string) => Promise<void>;
+  entrarDev: () => Promise<void>;
   sair: () => Promise<void>;
 };
 
@@ -16,6 +21,7 @@ const AuthCtx = createContext<Ctx>({
   carregando: true,
   entrar: async () => {},
   criarConta: async () => {},
+  entrarDev: async () => {},
   sair: async () => {},
 });
 
@@ -55,6 +61,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw new Error(error.message);
   }
 
+  /** Entra com a conta padrão de desenvolvimento, criando-a se ainda não existir. */
+  async function entrarDev() {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: DEV_EMAIL,
+      password: DEV_SENHA,
+    });
+    if (!error) return;
+    await supabase.auth.signUp({ email: DEV_EMAIL, password: DEV_SENHA });
+    const segunda = await supabase.auth.signInWithPassword({
+      email: DEV_EMAIL,
+      password: DEV_SENHA,
+    });
+    if (segunda.error) throw new Error(segunda.error.message);
+  }
+
   return (
     <AuthCtx.Provider
       value={{
@@ -62,6 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         carregando,
         entrar,
         criarConta,
+        entrarDev,
         sair: async () => {
           await supabase.auth.signOut();
           setSession(null);
