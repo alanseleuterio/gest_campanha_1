@@ -86,3 +86,18 @@ Use "Criar conta" para registrar um e-mail e senha (confirme o e-mail, se solici
 ## Stack
 
 React 19 · Vite · TypeScript · Tailwind CSS v4 · TanStack Router/Query · Leaflet · Recharts · shadcn/ui
+
+## Documentação
+
+A documentação completa está em [`docs/`](./docs/README.md):
+
+1. [Visão geral](./docs/01-visao-geral.md)
+2. [Arquitetura](./docs/02-arquitetura.md)
+3. [Modelo de dados (PostgreSQL)](./docs/03-modelo-de-dados.md)
+4. [Camada de dados no front](./docs/04-camada-de-dados.md)
+5. [Interface e rotas](./docs/05-interface-e-rotas.md)
+6. [Design system](./docs/06-design-system.md)
+7. [Autenticação e segurança](./docs/07-autenticacao-seguranca.md)
+8. [Operação](./docs/08-operacao.md)
+9. [Manutenção de dados](./docs/09-manutencao-de-dados.md)
+10. [Glossário](./docs/10-glossario.md)
