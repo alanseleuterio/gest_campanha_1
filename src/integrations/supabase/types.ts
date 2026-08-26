@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      bairros: {
+        Row: {
+          created_at: string
+          geometria: Json
+          id: string
+          liderancas: number
+          locais: number
+          nome: string
+          populacao: number
+          quadrante: string
+          regiao_urbana: string
+          updated_at: string
+          votos: number
+          votos_mil: number
+          votos_por_local: number
+        }
+        Insert: {
+          created_at?: string
+          geometria?: Json
+          id?: string
+          liderancas?: number
+          locais?: number
+          nome: string
+          populacao?: number
+          quadrante?: string
+          regiao_urbana: string
+          updated_at?: string
+          votos?: number
+          votos_mil?: number
+          votos_por_local?: number
+        }
+        Update: {
+          created_at?: string
+          geometria?: Json
+          id?: string
+          liderancas?: number
+          locais?: number
+          nome?: string
+          populacao?: number
+          quadrante?: string
+          regiao_urbana?: string
+          updated_at?: string
+          votos?: number
+          votos_mil?: number
+          votos_por_local?: number
+        }
+        Relationships: []
+      }
       fichas: {
         Row: {
           autorizou_contato: boolean
@@ -89,6 +137,198 @@ export type Database = {
           id?: string
           nome?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      liderancas: {
+        Row: {
+          atuacao: string
+          bairro: string
+          created_at: string
+          id: string
+          lat: number
+          lng: number
+          local_ref: string
+          nome: string
+          perfil: string
+          regiao_urbana: string
+          segmento: string
+          telefone: string | null
+          updated_at: string
+        }
+        Insert: {
+          atuacao?: string
+          bairro?: string
+          created_at?: string
+          id?: string
+          lat?: number
+          lng?: number
+          local_ref?: string
+          nome: string
+          perfil?: string
+          regiao_urbana?: string
+          segmento?: string
+          telefone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          atuacao?: string
+          bairro?: string
+          created_at?: string
+          id?: string
+          lat?: number
+          lng?: number
+          local_ref?: string
+          nome?: string
+          perfil?: string
+          regiao_urbana?: string
+          segmento?: string
+          telefone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      locais_votacao: {
+        Row: {
+          bairro: string
+          created_at: string
+          distancia: number
+          id: string
+          lat: number
+          lng: number
+          nome: string
+          regiao_urbana: string
+          seccoes: number
+          updated_at: string
+          votos: number
+          zona: number
+        }
+        Insert: {
+          bairro?: string
+          created_at?: string
+          distancia?: number
+          id?: string
+          lat?: number
+          lng?: number
+          nome: string
+          regiao_urbana?: string
+          seccoes?: number
+          updated_at?: string
+          votos?: number
+          zona?: number
+        }
+        Update: {
+          bairro?: string
+          created_at?: string
+          distancia?: number
+          id?: string
+          lat?: number
+          lng?: number
+          nome?: string
+          regiao_urbana?: string
+          seccoes?: number
+          updated_at?: string
+          votos?: number
+          zona?: number
+        }
+        Relationships: []
+      }
+      municipios: {
+        Row: {
+          coordenacao: string | null
+          created_at: string
+          geometria: Json
+          id: string
+          liderancas: number
+          nome: string
+          populacao: number
+          quadrante: string
+          regiao: string
+          sede: Json
+          status: string
+          updated_at: string
+          votos: number
+          votos_mil: number
+        }
+        Insert: {
+          coordenacao?: string | null
+          created_at?: string
+          geometria?: Json
+          id?: string
+          liderancas?: number
+          nome: string
+          populacao?: number
+          quadrante?: string
+          regiao: string
+          sede?: Json
+          status?: string
+          updated_at?: string
+          votos?: number
+          votos_mil?: number
+        }
+        Update: {
+          coordenacao?: string | null
+          created_at?: string
+          geometria?: Json
+          id?: string
+          liderancas?: number
+          nome?: string
+          populacao?: number
+          quadrante?: string
+          regiao?: string
+          sede?: Json
+          status?: string
+          updated_at?: string
+          votos?: number
+          votos_mil?: number
+        }
+        Relationships: []
+      }
+      rede: {
+        Row: {
+          chave: string
+          created_at: string
+          dados: Json
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          chave: string
+          created_at?: string
+          dados?: Json
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          chave?: string
+          created_at?: string
+          dados?: Json
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      regioes_urbanas: {
+        Row: {
+          created_at: string
+          geometria: Json
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          geometria?: Json
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          geometria?: Json
+          id?: string
+          nome?: string
+          updated_at?: string
         }
         Relationships: []
       }

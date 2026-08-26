@@ -62,10 +62,22 @@ src/
 
 Tabelas no schema `public`:
 
+Dados operacionais (privados por usuário, RLS por `auth.uid()`):
+
 - `fichas` — fichas de entrevista (nome, bairro, liderança, situação de voto, pautas, próximo passo, telefone, observação, foto)
 - `fotos_lideranca` — foto por liderança (`user_id` + `chave` únicos)
 
-Ambas têm RLS habilitado com políticas por `auth.uid()`, então cada usuário lê e escreve apenas as próprias linhas.
+Dados geográficos e estatísticos (leitura pública, somente consulta):
+
+- `municipios` — 78 municípios do MS: votos de 2022, votos por mil, população, status, coordenação, quadrante, sede e geometria (`jsonb`)
+- `bairros` — bairros de Campo Grande: população, votos, lideranças, quadrante, votos por local, locais e geometria
+- `regioes_urbanas` — regiões urbanas de Campo Grande e suas geometrias
+- `liderancas` — lideranças mapeadas com segmento, atuação, bairro, telefone e coordenadas
+- `locais_votacao` — locais de votação com votos, zona, seções e coordenadas
+- `rede` — blocos da rede de coordenação (candidato, coordenação geral, regiões, coordenadores, lideranças)
+
+O mapa Leaflet, o painel, a rede e a busca consomem esses dados diretamente do PostgreSQL (carregados uma vez por sessão via TanStack Query).
+
 
 ## Acesso
 
