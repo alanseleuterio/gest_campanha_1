@@ -61,6 +61,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw new Error(error.message);
   }
 
+  /** Entra com a conta padrão de desenvolvimento, criando-a se ainda não existir. */
+  async function entrarDev() {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: DEV_EMAIL,
+      password: DEV_SENHA,
+    });
+    if (!error) return;
+    await supabase.auth.signUp({ email: DEV_EMAIL, password: DEV_SENHA });
+    const segunda = await supabase.auth.signInWithPassword({
+      email: DEV_EMAIL,
+      password: DEV_SENHA,
+    });
+    if (segunda.error) throw new Error(segunda.error.message);
+  }
+
   return (
     <AuthCtx.Provider
       value={{
@@ -68,6 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         carregando,
         entrar,
         criarConta,
+        entrarDev,
         sair: async () => {
           await supabase.auth.signOut();
           setSession(null);
