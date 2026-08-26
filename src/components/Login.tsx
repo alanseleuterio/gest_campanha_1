@@ -84,6 +84,22 @@ export function Login() {
           <button className="bt p w-full" type="submit" disabled={enviando}>
             {enviando ? "Aguarde..." : modo === "entrar" ? "Entrar" : "Criar conta"}
           </button>
+          <button
+            type="button"
+            className="bt w-full mt-2"
+            disabled={enviando}
+            onClick={() => void acessoRapido()}
+          >
+            Entrar em modo desenvolvimento
+          </button>
+          <div className="mt-3 rounded-lg border border-linha bg-muted/40 p-3 text-[12px] leading-relaxed text-tinta3">
+            <b className="block text-tinta">Acesso de desenvolvimento</b>
+            E-mail: <code className="font-mono">{DEV_EMAIL}</code>
+            <br />
+            Senha: <code className="font-mono">{DEV_SENHA}</code>
+            <br />
+            Já vem preenchido — basta clicar em Entrar.
+          </div>
           <p className="aj text-center">
             {modo === "entrar" ? "Ainda não tem acesso?" : "Já tem conta?"}{" "}
             <button
