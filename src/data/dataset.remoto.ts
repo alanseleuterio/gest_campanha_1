@@ -92,7 +92,9 @@ export async function carregaDataset(): Promise<Dataset> {
     y: num(l.lat),
   }));
 
-  const blocos = Object.fromEntries((rede.data ?? []).map((r) => [r.chave, r.dados]));
+  const blocos: Record<string, unknown> = Object.fromEntries(
+    (rede.data ?? []).map((r) => [r.chave, r.dados as unknown]),
+  );
   const redeLid = ((blocos["lid"] ?? []) as RedeLid[]).map((l) => ({
     ...l,
     eixo: MAPA_SEG[l.s] ?? "Outros eixos",
